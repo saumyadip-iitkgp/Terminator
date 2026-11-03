@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# Terminator demo script: show a quick summary of this Linux machine.
+# Run with: terminator-bash system-info
+#
+set -euo pipefail
+
+title() {
+    printf '\n=== %s ===\n' "$1"
+}
+
+title "System"
+printf 'Host:       %s\n' "$(hostname)"
+printf 'OS:         %s\n' "$(uname -srm)"
+printf 'Date:       %s\n' "$(date '+%Y-%m-%d %H:%M:%S %Z')"
+
+title "Uptime"
+uptime -p 2>/dev/null || uptime
+
+title "Disk usage"
+df -h -x tmpfs -x devtmpfs 2>/dev/null | awk 'NR == 1 || $NF == "/" || $NF ~ /^\/home(\/|$)/'
